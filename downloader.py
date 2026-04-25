@@ -28,19 +28,43 @@ response from https://nhentai.net/api/v2/galleries?page=1&per_page=1
 import database as db
 import requests
 from time import sleep
+import json
+
+#load settings
+try:
+    with open('settings.json') as file:
+        d = json.load(file)["website"]
+        apiKey = d["api-key"]
+except(FileExistsError):
+    with open('settings.json', "x") as file:
+        file.write("""
+        {
+  "database":{
+    "host": "11.11.11.11:6942 or example.com",
+    "user": "DbUsername",
+    "pass": "DbPassword",
+    "db": "" #leave empty, we create our own database called nHentai
+
+  },
+  "website": {
+    "api-key": "YourNHentaiApiKey"
+  }
+}
+        """)
+        print("settings.json created, pleas set up!")
+        exit()
 
 
-apiKey = "Your key, not really nessasary"
 
 r = requests.get('https://nhentai.net/api/v2/galleries?page=1&per_page=100', headers={"Authorization": apiKey})
 
-startFrom = 1800 #currently at 1800
-for page in range(startFrom, (r.json()["num_pages"])):
+startFrom = 1 #currently at 6104
+for page in range(startFrom, (r.json()["num_pages"]+1)):
     print(page)
     r = requests.get(f'https://nhentai.net/api/v2/galleries?page={page}&per_page=100', headers={"Authorization": apiKey, "User-Agent":"nHentai scraper from github.com/patreonofficial"})
-    if (page % 30 == 0  or r.status_code == 429):
-        print("waiting 10 seconds")
-        sleep(10)
+    if (r.status_code == 429): #page % 30 == 0
+        print("waiting 20 seconds")
+        sleep(20)
         r = requests.get(f'https://nhentai.net/api/v2/galleries?page={page}&per_page=100',
                          headers={"Authorization": apiKey})
     for manga in r.json()["result"]:

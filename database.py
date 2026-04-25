@@ -1,9 +1,19 @@
 import pymysql
+import json
 
-connection = pymysql.connect(host='host', # two of these exist in this file
-                             user='usr',  # make sure to change both
-                             password='pass',
-                             database='',
+#load settings
+with open('settings.json') as file:
+    d = json.load(file)["database"]
+    host = d["host"]
+    user = d["user"]
+    password = d["pass"]
+    db = d["db"]
+
+
+connection = pymysql.connect(host=host,
+                             user=user,
+                             password=password,
+                             database=db,
                              cursorclass=pymysql.cursors.DictCursor)
 
 # create nHentai db
@@ -60,7 +70,6 @@ def drop():
                 cursor.execute(sql)
             except():
                 print("Database exists")
-                print(error)
 
         # connection is not autocommit by default. So you must commit to save
         # your changes.
@@ -70,10 +79,10 @@ def drop():
 dquote = "\""
 bslash = "\\"
 def add_entry(manga):
-    connection = pymysql.connect(host='host',
-                                 user='usr',
-                                 password='pass',
-                                 database='',
+    connection = pymysql.connect(host=host,
+                                 user=user,
+                                 password=password,
+                                 database=db,
                                  cursorclass=pymysql.cursors.DictCursor)
     #print(manga["id"])
     with connection:
@@ -96,3 +105,6 @@ def add_entry(manga):
                 print(f"Entry with id {manga['id']} exists")
             except(pymysql.err.InterfaceError):
                 print("pymysql.err.InterfaceError")
+
+def match_Tags():
+    pass
