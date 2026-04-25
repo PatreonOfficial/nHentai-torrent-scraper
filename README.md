@@ -5,4 +5,5 @@ Features:
 - - [ ] complete tag id to name db
 - [ ] complete automatic(still has errors)
 - [ ] Downloading torrents
+- [ ] Error handeling
 - [ ] Optimization
