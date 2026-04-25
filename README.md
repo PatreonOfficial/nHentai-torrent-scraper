@@ -6,4 +6,6 @@ Features:
 - [ ] complete automatic(still has errors)
 - [ ] Downloading torrents
 - [ ] Error handeling
+- - [ ] DNS resolve error
+  - [ ] Adhere to rate limits
 - [ ] Optimization
