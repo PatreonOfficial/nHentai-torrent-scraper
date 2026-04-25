@@ -48,9 +48,12 @@ def create():
                 )"""
 
                 cursor.execute(sql)
-                sql = """CREATE TABLE tagsName (
+                sql = """CREATE TABLE tagNames (
                                 tag_id int PRIMARY KEY,
-                                tag_name varchar(1024) not null
+                                tag_name varchar(1024),
+                                tag_type varchar(1024),
+                                tag_slug varchar(1024),
+                                tag_url varchar(1024)
                                 )"""
                 cursor.execute(sql)
             except(pymysql.err.OperationalError):
@@ -62,6 +65,11 @@ def create():
             connection.commit()
 
 def drop():
+    if input("Are you sure? Y/N") != "Y" or "y":
+        exit()
+    if input("Are you really sure?\n this is going to drop the whole DB! Y/N") != "Y" or "y":
+        exit()
+
     with connection:
         with connection.cursor() as cursor:
             try:
@@ -107,4 +115,6 @@ def add_entry(manga):
                 print("pymysql.err.InterfaceError")
 
 def match_Tags():
-    pass
+    # to copy tag ids
+    #INSERT INTO tagNames (tag_id) SELECT DISTINCT tag FROM tagsId;
+
