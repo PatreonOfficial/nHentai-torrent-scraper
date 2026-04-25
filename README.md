@@ -1,11 +1,11 @@
 Features:  
 - [ ] Build Manga Database
-- - [x] complete tag db
-- - [x] conplete manga db
-- - [ ] complete tag id to name db
+  - [x] complete tag db
+  - [x] conplete manga db
+  - [ ] complete tag id to name db
 - [ ] complete automatic(still has errors)
 - [ ] Downloading torrents
 - [ ] Error handeling
-- - [ ] DNS resolve error
+  - [ ] DNS resolve error
   - [ ] Adhere to rate limits
 - [ ] Optimization
