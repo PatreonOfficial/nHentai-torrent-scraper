@@ -47,17 +47,20 @@ except FileNotFoundError:
         exit()
 
 
+def scrape_all():
+  r = requests.get('https://nhentai.net/api/v2/galleries?page=1&per_page=100', headers={"Authorization": apiKey})
 
-r = requests.get('https://nhentai.net/api/v2/galleries?page=1&per_page=100', headers={"Authorization": apiKey})
-
-startFrom = 1 #currently at 6104
-for page in range(startFrom, (r.json()["num_pages"]+1)):
-    print(page)
-    r = requests.get(f'https://nhentai.net/api/v2/galleries?page={page}&per_page=100', headers={"Authorization": apiKey, "User-Agent":"nHentai scraper from github.com/patreonofficial"})
-    if (r.status_code == 429): #page % 30 == 0
-        print("waiting 20 seconds")
-        sleep(20)
-        r = requests.get(f'https://nhentai.net/api/v2/galleries?page={page}&per_page=100',
-                         headers={"Authorization": apiKey})
-    for manga in r.json()["result"]:
-        db.add_entry(manga)
+  startFrom = 1 #currently at 6104
+  for page in range(startFrom, (r.json()["num_pages"]+1)):
+      print(page)
+      r = requests.get(f'https://nhentai.net/api/v2/galleries?page={page}&per_page=100', headers={"Authorization": apiKey, "User-Agent":"nHentai scraper from github.com/patreonofficial"})
+      if (r.status_code == 429): #page % 30 == 0
+          print("waiting 20 seconds")
+          sleep(20)
+          r = requests.get(f'https://nhentai.net/api/v2/galleries?page={page}&per_page=100',
+                          headers={"Authorization": apiKey})
+      for manga in r.json()["result"]:
+          db.add_entry(manga)
+        
+def get_tag_metadata():
+  db.match_tags()

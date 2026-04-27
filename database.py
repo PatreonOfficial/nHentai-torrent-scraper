@@ -1,7 +1,11 @@
 import sqlite3 as db
 import json
+import requests
+import time
 
-
+with open('settings.json') as file:
+        d = json.load(file)["website"]
+        apiKey = d["api-key"]
 
 connection = db.connect("database.db")
 cursor = connection.cursor()
@@ -84,9 +88,56 @@ def add_entry(manga):
     except(db.InterfaceError):
         print("db.err.InterfaceError")
 
-def match_Tags():
+def match_tags():
+    
+
     # to copy tag ids
     #INSERT INTO tagNames (tag_id) SELECT DISTINCT tag FROM tagsId;
-    print("Fucking do me")
+    #select tag_id from tagNames where tag_name IS NULL limit 100;
     
-create()
+    # Example tag
+    # {
+    #     "id": 1,
+    #     "type": "group",
+    #     "name": "mu-keikaku",
+    #     "slug": "mu-keikaku",
+    #     "url": "/group/mu-keikaku/",
+    #     "count": 12
+    #  }
+    
+    while True:
+        startTime = time.time()
+        for n in range(14):
+            
+            #api referance:
+            # https://nhentai.net/api/v2/tags/ids?ids=54%2C58
+            url = "https://nhentai.net/api/v2/tags/ids?ids="
+            
+            sql = "select tag_id from tagNames where tag_name IS NULL limit 100;"
+            cursor.execute(sql)
+            result = cursor.fetchall()
+            
+            if result.__len__() == 0:
+                print("Done with tag meta data import")
+                break
+            
+            for id in result:
+                url += str(id[0]) + "%2c"
+            r = requests.get(url, headers={"Authorization": apiKey})
+            for tag in r.json():
+                sql = f"""
+                        UPDATE tagNames
+                        SET tag_name = "{tag["name"]}", tag_type = "{tag["type"]}", tag_slug = "{tag["slug"]}", tag_url = "{tag["url"]}"
+                        WHERE tag_id = {tag["id"]}
+                        """
+                cursor.execute(sql)
+            connection.commit()
+        endTime = time.time()
+        
+        
+        wait = round(61-(endTime - startTime))
+        for left in reversed(range(1, wait)):
+            print(f"Waiting {left:2} seconds for Rate Limit", end='\r')
+            time.sleep(1)
+    
+match_tags()
