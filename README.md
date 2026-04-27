@@ -4,7 +4,7 @@ Features:
   - [x] conplete manga db
   - [X] complete tag id to name db
 - [ ] Code is commented
-- [ ] complete automatic(still has errors)
+- [ ] completely automatic(still has errors)
 - [ ] Downloading torrents
 - [ ] Error handeling
   - [ ] DNS resolve error
