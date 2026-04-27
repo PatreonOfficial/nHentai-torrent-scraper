@@ -135,7 +135,7 @@ def match_tags():
         endTime = time.time()
         
         
-        wait = round(61-(endTime - startTime))
+        wait = round(62-(endTime - startTime))
         for left in reversed(range(1, wait)):
             print(f"Waiting {left:2} seconds for Rate Limit", end='\r')
             time.sleep(1)
