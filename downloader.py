@@ -5,7 +5,7 @@ response from https://nhentai.net/api/v2/galleries?page=1&per_page=1
     {
       "id": 645834,
       "media_id": "3904166",
-      "english_title": "[Sanbaizu] Handjob Nurse and the Ladies' Room",
+      "english_title": "[Sanbaizu] Hand*ob Nurse and the Ladies' Room",
       "japanese_title": "[Sanbaizu] 手コキナースと女子便所",
       "thumbnail": "galleries/3904166/thumb.webp",
       "thumbnail_width": 250,
@@ -52,7 +52,6 @@ def scrape_all():
 
   startFrom = 1 #currently at 6104
   for page in range(startFrom, (r.json()["num_pages"]+1)):
-      print(page)
       r = requests.get(f'https://nhentai.net/api/v2/galleries?page={page}&per_page=100', headers={"Authorization": apiKey, "User-Agent":"nHentai scraper from github.com/patreonofficial"})
       if (r.status_code == 429): #page % 30 == 0
           print("waiting 20 seconds")
