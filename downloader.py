@@ -35,17 +35,9 @@ try:
     with open('settings.json') as file:
         d = json.load(file)["website"]
         apiKey = d["api-key"]
-except(FileExistsError):
+except FileNotFoundError:
     with open('settings.json', "x") as file:
-        file.write("""
-        {
-  "database":{
-    "host": "11.11.11.11:6942 or example.com",
-    "user": "DbUsername",
-    "pass": "DbPassword",
-    "db": "" #leave empty, we create our own database called nHentai
-
-  },
+        file.write("""{
   "website": {
     "api-key": "YourNHentaiApiKey"
   }
