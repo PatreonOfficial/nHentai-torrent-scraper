@@ -60,6 +60,28 @@ def scrape_all():
                           headers={"Authorization": apiKey})
       for manga in r.json()["result"]:
           db.add_entry(manga)
-        
-def get_tag_metadata():
-  db.match_tags()
+
+def scrape_one_url(url):
+  if url.startswith("https://nhentai.net/g/") or url.startswith("nhentai.net/g/"):
+    genUrl = "https://nhentai.net/api/v2/galleries/" + url.split("/")[-1]
+  else:
+    genUrl = "https://nhentai.net/api/v2/galleries/" + url
+  
+  result = requests.get(genUrl, headers={"Authorization": apiKey}).json()
+  
+  # convert single galerie in suitable format for add_entry
+  tags = []
+  for tag in result["tags"]:
+    tags.append(tag["id"])
+  
+  manga = {
+      "id": result["id"],
+      "media_id": result["media_id"],
+      "english_title": result["title"]["english"],
+      "japanese_title": result["title"]["japanese"],
+      "thumbnail": result["thumbnail"]["path"],
+      "num_pages": result["num_pages"],
+      "tag_ids": tags,
+    }
+  
+  db.add_entry(manga)
