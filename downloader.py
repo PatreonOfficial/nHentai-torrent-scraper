@@ -43,7 +43,7 @@ except FileNotFoundError:
   }
 }
         """)
-        print("settings.json created, pleas set up!")
+        print("settings.json created, please set up!")
         exit()
 
 
