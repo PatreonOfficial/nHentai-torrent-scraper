@@ -112,7 +112,6 @@ def scrape_torrent(url):
   print("Downloading torrent for " + id)
   
   r = requests.get(validUrl + "/download", headers={"Authorization": apiKey, "User-Agent":"nHentai scraper from github.com/patreonofficial"})
-  print(r.)
   
   folder = f"torrents/{paddedId[0]}{paddedId[1]}"
   
