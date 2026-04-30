@@ -139,3 +139,6 @@ def match_tags():
         for left in reversed(range(1, wait)):
             print(f"Waiting {left:2} seconds for Rate Limit", end='\r')
             time.sleep(1)
+            
+def add_torrent_tag(id):
+    print("fix me")

@@ -6,6 +6,7 @@ Features:
 - [ ] Code is commented
 - [ ] completely automatic(still has errors)
 - [ ] Downloading torrents
+- [ ] Search functionality
 - [ ] Error handeling
   - [ ] DNS resolve error
   - [X] Adhere to rate limits

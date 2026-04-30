@@ -29,6 +29,7 @@ import database as db
 import requests
 from time import sleep
 import json
+from os import mkdir
 
 #load settings
 try:
@@ -46,6 +47,23 @@ except FileNotFoundError:
         print("settings.json created, please set up!")
         exit()
 
+def validize_url(url):
+  if url.startswith("https://nhentai.net/g/") or url.startswith("nhentai.net/g/"):
+    return "https://nhentai.net/g/" + url.split("/")[-1]
+  elif url.isdigit():
+    return "https://nhentai.net/g/" + url
+  else:
+    print("Invalid Url or ID")
+    raise SystemExit(0)
+
+def id_from_url(url):
+  if url.startswith("https://nhentai.net/g/") or url.startswith("nhentai.net/g/"):
+    return url.split("/")[-1]
+  elif url.isdigit():
+    return url
+  else:
+    print("Invalid Url or ID")
+    raise SystemExit(0)
 
 def scrape_all():
   r = requests.get('https://nhentai.net/api/v2/galleries?page=1&per_page=100', headers={"Authorization": apiKey})
@@ -62,12 +80,9 @@ def scrape_all():
           db.add_entry(manga)
 
 def scrape_one_url(url):
-  if url.startswith("https://nhentai.net/g/") or url.startswith("nhentai.net/g/"):
-    genUrl = "https://nhentai.net/api/v2/galleries/" + url.split("/")[-1]
-  else:
-    genUrl = "https://nhentai.net/api/v2/galleries/" + url
+  validUrl = validize_url(url)
   
-  result = requests.get(genUrl, headers={"Authorization": apiKey}).json()
+  result = requests.get(validUrl, headers={"Authorization": apiKey, "User-Agent":"nHentai scraper from github.com/patreonofficial"}).json()
   
   # convert single galerie in suitable format for add_entry
   tags = []
@@ -85,3 +100,29 @@ def scrape_one_url(url):
     }
   
   db.add_entry(manga)
+  
+  
+# something takes long(5 sec delay added by nhentai)
+# currently does not work
+def scrape_torrent(url):
+  validUrl = validize_url(url)
+  id = id_from_url(validUrl)
+  paddedId = id.rjust(6, '0')
+  
+  print("Downloading torrent for " + id)
+  
+  r = requests.get(validUrl + "/download", headers={"Authorization": apiKey, "User-Agent":"nHentai scraper from github.com/patreonofficial"})
+  print(r.)
+  
+  folder = f"torrents/{paddedId[0]}{paddedId[1]}"
+  
+  try:
+    mkdir(folder)
+  except FileExistsError:
+    pass
+  open(f"{folder}/{paddedId}.torrent", 'wb').write(r.content)
+  
+  #add to db
+  db.add_torrent_tag(id)
+  
+scrape_torrent("609823")

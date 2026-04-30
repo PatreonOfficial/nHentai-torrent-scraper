@@ -12,3 +12,6 @@ def drop_db():
 
 def add_manga(url):
     database.add_entry(url)
+    
+def scrape_torrent(url):
+    downloader.scrape_torrent(url)
