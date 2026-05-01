@@ -20,7 +20,8 @@ def create():
         title_english varchar(1024),
         title_japanese varchar(1024),
         thumbnail varchar(255),
-        num_pages int
+        num_pages int,
+        torrent_downloaded bool default "0"
         )"""
         cursor.execute(sql)
 
@@ -141,4 +142,11 @@ def match_tags():
             time.sleep(1)
             
 def add_torrent_tag(id):
-    print("fix me")
+    print(id)
+    sql = f"""
+            UPDATE mangas
+            SET torrent_downloaded = 1
+            WHERE id = {id}
+            """
+    cursor.execute(sql)
+    connection.commit()

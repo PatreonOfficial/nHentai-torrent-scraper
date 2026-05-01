@@ -5,7 +5,7 @@ Features:
   - [X] complete tag id to name db
 - [ ] Code is commented
 - [ ] completely automatic(still has errors)
-- [ ] Downloading torrents
+- [X] Downloading torrents(sadly verry low rate limits)
 - [ ] Search functionality
 - [ ] Error handeling
   - [ ] DNS resolve error

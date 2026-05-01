@@ -4,3 +4,4 @@ settings.json
 __pycache__
 *.sql
 *.db
+torrents

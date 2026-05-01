@@ -111,7 +111,10 @@ def scrape_torrent(url):
   
   print("Downloading torrent for " + id)
   
-  r = requests.get(validUrl + "/download", headers={"Authorization": apiKey, "User-Agent":"nHentai scraper from github.com/patreonofficial"})
+  r = requests.post("https://nhentai.net/api/v2/galleries/" + id + "/download?format=torrent", headers={"Authorization": "Key " + apiKey, "User-Agent":"nHentai scraper from github.com/patreonofficial"})
+  torrent = requests.get(r.json()["url"])
+  
+  print(torrent.content)
   
   folder = f"torrents/{paddedId[0]}{paddedId[1]}"
   
@@ -119,9 +122,9 @@ def scrape_torrent(url):
     mkdir(folder)
   except FileExistsError:
     pass
-  open(f"{folder}/{paddedId}.torrent", 'wb').write(r.content)
+  open(f"{folder}/{paddedId}.torrent", 'wb').write(torrent.content)
   
   #add to db
   db.add_torrent_tag(id)
   
-scrape_torrent("609823")
+scrape_torrent("1")
